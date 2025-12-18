@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kru Pai Classroom • Excretory System Quest (Stage Select)</title>
+<style>
+:root{
+  --bg:#ffffff;
+  --ink:#111827;
+  --card:#ffffff;
+  --brand:#F59E0B;     /* yellow */
+  --accent:#FBBF24;    /* amber */
+  --accent2:#16A34A;   /* green */
+  --muted:#6B7280;
+  --ok:#16A34A;
+  --bad:#DC2626;
+  --soft:#FFFBEB;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+.container{max-width:980px;margin:0 auto;padding:16px}
+.header-top{
+  background:linear-gradient(90deg,var(--brand),#60A5FA);
+  color:#fff;padding:14px 16px;border-bottom:4px solid #dbeafe;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.brand-left{font-weight:900;letter-spacing:.4px;font-size:20px}
+.pills{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{
+  display:inline-flex;gap:8px;align-items:center;
+  padding:8px 12px;border-radius:999px;
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.25);
+  font-weight:800;color:#fff;
+  backdrop-filter: blur(6px);
+}
+.pill button{
+  border:none;border-radius:999px;
+  padding:6px 10px;font-weight:900;cursor:pointer;
+  background:rgba(255,255,255,.92);color:#111827;
+}
+.pill button.active{background:var(--accent);color:#fff}
+.mainhead{
+  margin:16px 0 10px 0;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap
+}
+.h1{font-size:22px;font-weight:1000;color:var(--accent)}
+.sub{color:var(--muted);font-weight:700;margin-top:4px}
+.badge{
+  display:none;
+  padding:8px 12px;border-radius:999px;
+  background:#eff6ff;border:2px solid #bfdbfe;
+  font-weight:900;color:#1d4ed8;
+  gap:8px;align-items:center;
+}
+.card{
+  background:var(--card);
+  border:2px solid #dbeafe;
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 10px 22px rgba(37,99,235,.08);
+}
+.row{display:grid;gap:14px}
+@media (min-width:900px){
+  .row{grid-template-columns: 1.1fr .9fr; align-items:start;}
+}
+.input{
+  width:100%;
+  padding:16px;
+  font-size:18px;
+  border-radius:14px;
+  border:2px solid #bfdbfe;
+  text-align:center;
+  font-weight:900;
+  outline:none;
+}
+.input:focus{border-color:var(--brand); box-shadow:0 0 0 4px rgba(37,99,235,.12)}
+.note{color:var(--muted);font-size:14px;text-align:center}
+.btn{
+  padding:12px 18px;border:none;border-radius:999px;
+  font-weight:1000;font-size:16px;cursor:pointer;
+}
+.btn.primary{background:var(--brand);color:#fff}
+.btn.accent{background:var(--accent);color:#fff}
+.btn.secondary{background:#e2e8f0;color:#111827}
+.btn.ghost{background:#fff;border:2px solid #e5e7eb;color:#111827}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.stage-grid{display:grid;gap:12px}
+@media (min-width:700px){ .stage-grid{grid-template-columns:repeat(3,1fr);} }
+.stage{
+  border:2px solid #e5e7eb;border-radius:16px;padding:14px;background:var(--soft);
+}
+.stage h3{margin:0 0 6px 0;font-size:18px;font-weight:1000}
+.stage p{margin:0;color:var(--muted);font-weight:700;font-size:13px;line-height:1.35}
+.stage .tag{display:inline-flex;margin-top:10px;padding:6px 10px;border-radius:999px;font-weight:1000;font-size:12px}
+.tag.ready{background:#ecfdf5;color:#065f46;border:1px solid #bbf7d0}
+.tag.soon{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}
+.progress{font-weight:1000;color:var(--brand);font-size:18px}
+.qbox{
+  border:2px solid #e5e7eb;border-radius:16px;padding:16px;background:#fff;
+}
+.question{
+  font-weight:1000;font-size:20px;line-height:1.45;margin:0 0 12px 0;
+}
+.choices{display:grid;gap:10px}
+.choice{
+  border:2px solid #e5e7eb;border-radius:14px;
+  padding:14px 16px;font-weight:900;font-size:17px;
+  background:#f8fafc;cursor:pointer;text-align:left;
+}
+.choice:hover{border-color:var(--brand)}
+.choice.selected{border-color:var(--accent);background:#fff7ed}
+.choice.correct{border-color:var(--ok);background:#ecfdf5}
+.choice.wrong{border-color:var(--bad);background:#fef2f2}
+.choice.locked{cursor:not-allowed;opacity:.8}
+.choice:disabled{cursor:not-allowed;opacity:.82}
+.jumper{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(44px,1fr));
+  gap:8px;margin-top:12px
+}
+.dot{
+  padding:10px;border-radius:14px;border:2px solid #e5e7eb;background:#fff;
+  font-weight:900;cursor:pointer;position:relative;
+}
+.dot.current{border-color:var(--accent)}
+.dot.done{background:#fff7ed}
+.dot.correct{background:#ecfdf5;border-color:var(--ok)}
+.dot.wrong{background:#fef2f2;border-color:var(--bad)}
+.dot.correct::after{
+  content:"✓😁";
+  position:absolute;right:-10px;top:-10px;font-size:13px;
+}
+.dot.wrong::after{
+  content:"✗😅";
+  position:absolute;right:-10px;top:-10px;font-size:13px;
+}
+.big-emoji{
+  position:fixed;top:42%;left:50%;
+  transform:translate(-50%,-50%) scale(.25);
+  font-size:5.2rem;z-index:9999;pointer-events:none;
+  animation:bigPop .9s ease-out forwards;
+  filter:drop-shadow(0 10px 16px rgba(0,0,0,.18));
+}
+@keyframes bigPop{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.25)}
+  40%{opacity:1;transform:translate(-50%,-50%) scale(1.25)}
+  100%{opacity:0;transform:translate(-50%,-60%) scale(1)}
+}
+.result h2{margin:6px 0 0 0;font-size:26px;font-weight:1000;color:var(--brand)}
+.praise{font-size:20px;font-weight:1000;margin:8px 0 2px 0}
+.history{
+  margin-top:14px;border:2px dashed #cbd5e1;border-radius:16px;
+  padding:14px;background:#f8fafc;
+}
+.hist-table{width:100%;border-collapse:collapse;font-size:14px}
+.hist-table th,.hist-table td{padding:8px;border-bottom:1px solid #e5e7eb;text-align:left}
+.hist-table th{color:#374151;font-weight:1000}
+.footer{margin:18px 0 6px 0;color:var(--muted);font-size:12px;text-align:center}
+.small{font-size:12px;color:var(--muted);font-weight:700}
+</style>
+</head>
+<body>
+
+<div class="header-top">
+  <div class="brand-left">Kru Pai Classroom</div>
+  <div class="pills">
+    <div class="pill" title="Language">
+      🌐
+      <button id="langTH" onclick="setLang('th')">TH</button>
+      <button id="langEN" onclick="setLang('en')">EN</button>
+    </div>
+    <div class="pill badge" id="playerBadge">👤 <span id="badgeLabel">ผู้เล่น</span>: <span id="playerBadgeName"></span></div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="mainhead">
+    <div>
+      <div class="h1" id="title">🧠 เกมพิชิตระบบขับถ่ายของเสีย (3 ด่าน)</div>
+      <div class="sub" id="subtitle">เลือกด่านก่อนเล่น • ตอบแล้วรู้ทันที • มีประวัติการเล่น</div>
+    </div>
+    <div class="progress" id="progressText"></div>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="screenLogin" class="card">
+    <div class="row">
+      <div>
+        <h2 style="margin:0 0 6px 0;color:var(--brand);font-weight:1000" id="loginTitle">🎒 ลงชื่อเข้าเล่นเกม</h2>
+        <div class="note" id="loginHint">พิมพ์ชื่อเล่น แล้วกดเริ่มเล่นได้เลย</div>
+        <input id="playerNameInput" class="input" type="text" maxlength="24" autocomplete="off" placeholder="เช่น น้องพี / Emma / Aladin" />
+        <button class="btn primary" style="width:100%;font-size:18px" onclick="goStageSelect()">▶️ เริ่มเล่นเกม</button>
+        <div class="note" id="lastPlayHint" style="display:none;margin-top:8px"></div>
+      </div>
+      <div class="card" style="border-color:#fed7aa;background:#fff7ed">
+        <div style="font-weight:1000;color:#9a3412;margin-bottom:8px" id="howTitle">✨ วิธีเล่น</div>
+        <div class="small" id="howText">
+          1) ลงชื่อ → 2) เลือกด่าน → 3) ตอบทีละข้อ<br/>
+          ตอบถูก = 😁🎉 • ตอบผิด = 😅💦
+        </div>
+        <div style="margin-top:10px" class="small">
+          <span style="font-weight:1000" id="tipLabel">ทิป:</span> <span id="tipText">เล่นซ้ำได้ คะแนนจะถูกบันทึกไว้ในประวัติของชื่อนั้น</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE SELECT -->
+  <div id="screenStage" class="card" style="display:none">
+    <h2 style="margin:0 0 10px 0;color:var(--accent);font-weight:1000" id="stageTitle">🗺️ เลือกด่านที่อยากเล่น</h2>
+    <div class="stage-grid">
+      <div class="stage">
+        <h3 id="s1Title">🟡 ด่านที่ 1 • ระบบขับถ่ายของเสีย</h3>
+        <p id="s1Desc">ไต • เนฟรอน • ปัสสาวะ • สมดุลน้ำ/เกลือแร่ (30 ข้อ)</p>
+        <div class="tag ready" id="s1Tag">พร้อมเล่น</div>
+        <div class="controls">
+          <button class="btn accent" onclick="startStage(1)">▶️ <span id="play1">เล่นด่าน 1</span></button>
+        </div>
+      </div>
+
+      <div class="stage" style="display:none">
+        <h3 id="s2Title">🧪 ด่านที่ 2 • เอนไซม์ & pH</h3>
+        <p id="s2Desc">เอนไซม์ย่อยอาหาร • pH ที่เหมาะสม • แหล่งสร้างน้ำย่อย</p>
+        <div class="tag soon" id="s2Tag">กำลังเติมคำถาม</div>
+        <div class="controls">
+          <button class="btn secondary" disabled>⏳ <span id="play2">เร็วๆ นี้</span></button>
+        </div>
+      </div>
+
+      <div class="stage" style="display:none">
+        <h3 id="s3Title">🫀 ด่านที่ 3 • โครงสร้างอวัยวะย่อยอาหาร</h3>
+        <p id="s3Desc">ต่อมน้ำลาย • กระเพาะ • ลำไส้เล็ก/ใหญ่ (ลึกขึ้น)</p>
+        <div class="tag soon" id="s3Tag">กำลังเติมคำถาม</div>
+        <div class="controls">
+          <button class="btn secondary" disabled>⏳ <span id="play3">เร็วๆ นี้</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls" style="margin-top:14px">
+      <button class="btn ghost" onclick="backToLogin()">↩️ <span id="backLogin">กลับไปหน้าแรก</span></button>
+    </div>
+
+    <div class="history" id="stageHistoryBox" style="display:none">
+      <div style="font-weight:1000;margin-bottom:8px" id="histTitle">📒 ประวัติการเล่น (แยกตามด่าน)</div>
+      <div style="overflow:auto">
+        <table class="hist-table" id="stageHistoryTable"></table>
+      </div>
+      <div class="controls" style="margin-top:12px">
+        <button class="btn secondary" onclick="clearAllMyHistory()">🧹 <span id="clearHist">ล้างประวัติชื่อนี้ทั้งหมด</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME -->
+  <div id="screenGame" class="card" style="display:none">
+    <div class="qbox">
+      <div class="question" id="question"></div>
+      <div class="choices" id="choices"></div>
+      <div class="controls">
+        <button class="btn secondary" onclick="prevQ()">← <span id="btnPrev">ย้อนกลับ</span></button>
+        <button class="btn primary" onclick="nextQ()"><span id="btnNext">ถัดไป</span> →</button>
+        <button class="btn accent" onclick="finish()">🏁 <span id="btnFinish">สรุปคะแนน</span></button>
+        <button class="btn ghost" onclick="exitToStages()">🗺️ <span id="btnExit">กลับไปเลือกด่าน</span></button>
+      </div>
+      <div class="jumper" id="jumper"></div>
+      <div class="small" id="lockNote" style="margin-top:10px">* ตอบผิดแล้ว “ล็อกข้อ” เพื่อกันกดมั่ว (แนว Kru Pai)</div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="screenResult" class="card result" style="display:none">
+    <div id="playerShow" style="font-size:22px;font-weight:1000;color:var(--accent);margin:0 0 6px 0"></div>
+    <div id="praiseText" class="praise"></div>
+    <h2 id="scoreBig"></h2>
+    <p id="summary" style="margin:6px 0 0 0;color:var(--muted);font-weight:900"></p>
+
+    <div class="history" id="historyBox" style="display:none">
+      <div style="font-weight:1000;margin-bottom:8px" id="hist2Title">📒 ประวัติการเล่น (ด่านนี้)</div>
+      <div style="overflow:auto">
+        <table class="hist-table" id="historyTable"></table>
+      </div>
+      <div class="controls" style="margin-top:12px">
+        <button class="btn secondary" onclick="clearMyStageHistory()">🧹 <span id="clearStage">ล้างประวัติด่านนี้</span></button>
+      </div>
+    </div>
+
+    <div class="controls" style="margin-top:14px">
+      <button class="btn primary" onclick="replayStage()">🔁 <span id="replay">เล่นด่านนี้อีกครั้ง</span></button>
+      <button class="btn ghost" onclick="exitToStages()">🗺️ <span id="backStages">กลับไปเลือกด่าน</span></button>
+    </div>
+  </div>
+
+  <div class="footer">© Kru Pai Classroom • Excretory System Quest • Stage Select • TH/EN</div>
+</div>
+
+<script>
+/* =======================
+   Language UI
+======================= */
+let LANG = localStorage.getItem("kru_lang_digestive") || "th";
+const UI = {
+  th: {
+    title: "🧠 เกมพิชิตระบบขับถ่ายของเสีย (3 ด่าน)",
+    subtitle: "เลือกด่านก่อนเล่น • ตอบแล้วรู้ทันที • มีประวัติการเล่น",
+    badgeLabel:"ผู้เล่น",
+    loginTitle:"🎒 ลงชื่อเข้าเล่นเกม",
+    loginHint:"พิมพ์ชื่อเล่น แล้วกดเริ่มเล่นได้เลย",
+    howTitle:"✨ วิธีเล่น",
+    howText:"1) ลงชื่อ → 2) เลือกด่าน → 3) ตอบทีละข้อ<br/>ตอบถูก = 😁🎉 • ตอบผิด = 😅💦",
+    tipLabel:"ทิป:",
+    tipText:"เล่นซ้ำได้ คะแนนจะถูกบันทึกไว้ในประวัติของชื่อนั้น",
+    stageTitle:"🗺️ เลือกด่านที่อยากเล่น",
+    s1Title:"🟡 ด่านที่ 1 • ระบบขับถ่ายของเสีย",
+    s1Desc:"ไต • เนฟรอน • ปัสสาวะ • สมดุลน้ำ/เกลือแร่ (30 ข้อ)",
+    s2Title:"🧪 ด่านที่ 2 • เอนไซม์ & pH",
+    s2Desc:"เอนไซม์ย่อยอาหาร • pH ที่เหมาะสม • แหล่งสร้างน้ำย่อย",
+    s3Title:"🫀 ด่านที่ 3 • โครงสร้างอวัยวะย่อยอาหาร",
+    s3Desc:"ต่อมน้ำลาย • กระเพาะ • ลำไส้เล็ก/ใหญ่ (ลึกขึ้น)",
+    ready:"พร้อมเล่น",
+    soon:"กำลังเติมคำถาม",
+    play1:"เล่นด่าน 1",
+    play2:"เร็วๆ นี้",
+    play3:"เร็วๆ นี้",
+    backLogin:"กลับไปหน้าแรก",
+    histTitle:"📒 ประวัติการเล่น (แยกตามด่าน)",
+    clearHist:"ล้างประวัติชื่อนี้ทั้งหมด",
+    btnPrev:"ย้อนกลับ",
+    btnNext:"ถัดไป",
+    btnFinish:"สรุปคะแนน",
+    btnExit:"กลับไปเลือกด่าน",
+    lockNote:"* ตอบผิดแล้ว “ล็อกข้อ” เพื่อกันกดมั่ว (แนว Kru Pai)",
+    hist2Title:"📒 ประวัติการเล่น (ด่านนี้)",
+    clearStage:"ล้างประวัติด่านนี้",
+    replay:"เล่นด่านนี้อีกครั้ง",
+    backStages:"กลับไปเลือกด่าน",
+    qLabel:(i,t)=>`ข้อ ${i}/${t}`,
+    score:(s,t)=>`คุณได้ ${s}/${t} คะแนน`,
+    percent:(p)=>`คิดเป็น ${p}%`,
+    playerShow:(name,stage)=>`🏅 ผู้เล่น : ${name} • ด่านที่ ${stage}`,
+    stageName:(n)=> n===1? "ผลลัพธ์ของการย่อยอาหาร" : (n===2? "เอนไซม์ & pH" : "โครงสร้างอวัยวะ"),
+  },
+  en: {
+    title: "🧠 Excretory System Quest (Single Stage)",
+    subtitle: "Choose a stage • Instant feedback • Play history",
+    badgeLabel:"Player",
+    loginTitle:"🎒 Enter your name",
+    loginHint:"Type a nickname and press Start.",
+    howTitle:"✨ How to play",
+    howText:"1) Enter name → 2) Choose stage → 3) Answer one by one<br/>Correct = 😁🎉 • Wrong = 😅💦",
+    tipLabel:"Tip:",
+    tipText:"Replay anytime — your scores are saved under your name.",
+    stageTitle:"🗺️ Choose a stage",
+    s1Title:"🥪 Stage 1 • Digestion results",
+    s1Desc:"Eat → digest → what you get → where it’s absorbed (30 Qs)",
+    s2Title:"🧪 Stage 2 • Enzymes & pH",
+    s2Desc:"Digestive enzymes • optimal pH • where juices are made",
+    s3Title:"🫀 Stage 3 • Organ structure",
+    s3Desc:"Salivary glands • stomach • small/large intestine (deeper)",
+    ready:"Ready",
+    soon:"Coming soon",
+    play1:"Play Stage 1",
+    play2:"Coming soon",
+    play3:"Coming soon",
+    backLogin:"Back to home",
+    histTitle:"📒 Play history (by stage)",
+    clearHist:"Clear all history for this name",
+    btnPrev:"Back",
+    btnNext:"Next",
+    btnFinish:"Finish",
+    btnExit:"Back to stages",
+    lockNote:"* Wrong answers lock the question to prevent random tapping.",
+    hist2Title:"📒 Play history (this stage)",
+    clearStage:"Clear this stage history",
+    replay:"Replay this stage",
+    backStages:"Back to stages",
+    qLabel:(i,t)=>`Q ${i}/${t}`,
+    score:(s,t)=>`You scored ${s}/${t}`,
+    percent:(p)=>`${p}%`,
+    playerShow:(name,stage)=>`🏅 Player: ${name} • Stage ${stage}`,
+    stageName:(n)=> n===1? "Digestion results" : (n===2? "Enzymes & pH" : "Organ structure"),
+  }
+};
+function setLang(l){
+  LANG = l;
+  localStorage.setItem("kru_lang_digestive", LANG);
+  document.getElementById("langTH").classList.toggle("active", LANG==="th");
+  document.getElementById("langEN").classList.toggle("active", LANG==="en");
+  applyUI();
+  renderLastPlayHint();
+  if(state.screen==="game") render();
+  if(state.screen==="stage") renderStageHistory();
+}
+function applyUI(){
+  const t = UI[LANG];
+  document.getElementById("title").textContent = t.title;
+  document.getElementById("subtitle").textContent = t.subtitle;
+  document.getElementById("badgeLabel").textContent = t.badgeLabel;
+
+  document.getElementById("loginTitle").textContent = t.loginTitle;
+  document.getElementById("loginHint").textContent = t.loginHint;
+  document.getElementById("howTitle").textContent = t.howTitle;
+  document.getElementById("howText").innerHTML = t.howText;
+  document.getElementById("tipLabel").textContent = t.tipLabel;
+  document.getElementById("tipText").textContent = t.tipText;
+
+  document.getElementById("stageTitle").textContent = t.stageTitle;
+  document.getElementById("s1Title").textContent = t.s1Title;
+  document.getElementById("s1Desc").textContent = t.s1Desc;
+  document.getElementById("s2Title").textContent = t.s2Title;
+  document.getElementById("s2Desc").textContent = t.s2Desc;
+  document.getElementById("s3Title").textContent = t.s3Title;
+  document.getElementById("s3Desc").textContent = t.s3Desc;
+  document.getElementById("s1Tag").textContent = t.ready;
+  document.getElementById("s2Tag").textContent = t.soon;
+  document.getElementById("s3Tag").textContent = t.soon;
+  document.getElementById("play1").textContent = t.play1;
+  document.getElementById("play2").textContent = t.play2;
+  document.getElementById("play3").textContent = t.play3;
+  document.getElementById("backLogin").textContent = t.backLogin;
+  document.getElementById("histTitle").textContent = t.histTitle;
+  document.getElementById("clearHist").textContent = t.clearHist;
+
+  document.getElementById("btnPrev").textContent = t.btnPrev;
+  document.getElementById("btnNext").textContent = t.btnNext;
+  document.getElementById("btnFinish").textContent = t.btnFinish;
+  document.getElementById("btnExit").textContent = t.btnExit;
+  document.getElementById("lockNote").textContent = t.lockNote;
+
+  document.getElementById("hist2Title").textContent = t.hist2Title;
+  document.getElementById("clearStage").textContent = t.clearStage;
+  document.getElementById("replay").textContent = t.replay;
+  document.getElementById("backStages").textContent = t.backStages;
+}
+
+/* =======================
+   Tiny sounds (WebAudio)
+======================= */
+let audioCtx = null;
+function beep(freq=740, dur=0.06, gain=0.05){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type="sine";
+    o.frequency.value=freq;
+    g.gain.value=gain;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start();
+    o.stop(audioCtx.currentTime + dur);
+  }catch(e){}
+}
+function sClick(){beep(520,0.05,0.05)}
+function sOk(){beep(880,0.08,0.06)}
+function sBad(){beep(220,0.09,0.06)}
+
+/* =======================
+   Data: Stage 1 (30)
+======================= */
+const STAGE_DATA = {
+  1: [
+    {q_th:"หน้าที่หลักของระบบขับถ่ายของเสียคืออะไร",q_en:"What is the main function of the excretory system?",options_th:["ย่อยอาหาร", "กำจัดของเสียและรักษาสมดุลของน้ำ/เกลือแร่", "สร้างเม็ดเลือดแดง", "สร้างเสียง"],options_en:["Digest food", "Remove wastes and maintain water/salt balance", "Make red blood cells", "Make sound"],a:1},
+    {q_th:"อวัยวะหลักของระบบขับถ่ายทางปัสสาวะคืออะไร",q_en:"What is the main organ of the urinary system?",options_th:["ปอด", "ไต", "หัวใจ", "กระเพาะอาหาร"],options_en:["Lungs", "Kidneys", "Heart", "Stomach"],a:1},
+    {q_th:"เลือดเข้าสู่ไตเพื่อกรองของเสียผ่านหลอดเลือดใด",q_en:"Blood enters the kidney through which vessel?",options_th:["หลอดเลือดแดงไต", "หลอดเลือดดำไต", "หลอดเลือดแดงปอด", "หลอดเลือดดำเวนาคาวา"],options_en:["Renal artery", "Renal vein", "Pulmonary artery", "Vena cava"],a:0},
+    {q_th:"หน่วยโครงสร้างและหน้าที่ของไตเรียกว่าอะไร",q_en:"What is the structural and functional unit of the kidney called?",options_th:["นิวรอน", "เนฟรอน", "ถุงลม", "วิลลัส"],options_en:["Neuron", "Nephron", "Alveolus", "Villus"],a:1},
+    {q_th:"การกรองเลือดขั้นแรกเกิดที่ส่วนใดของเนฟรอน",q_en:"Initial filtration occurs at which part of a nephron?",options_th:["ท่อรวม (collecting duct)", "โกลเมอรูลัสในแคปซูลของโบว์แมน", "ท่อปัสสาวะ", "กระเพาะปัสสาวะ"],options_en:["Collecting duct", "Glomerulus in Bowman's capsule", "Urethra", "Urinary bladder"],a:1},
+    {q_th:"ข้อใดเป็นตัวอย่างของเสียที่ไตช่วยกำจัดออกจากเลือด",q_en:"Which is an example of waste removed by kidneys?",options_th:["ออกซิเจน", "ยูเรีย", "กลูโคส (ปกติ)", "วิตามิน"],options_en:["Oxygen", "Urea", "Glucose (normally)", "Vitamins"],a:1},
+    {q_th:"ปัสสาวะถูกลำเลียงจากไตไปยังกระเพาะปัสสาวะผ่านอะไร",q_en:"Urine travels from kidneys to the bladder through the…",options_th:["ท่อไต", "ท่อปัสสาวะ", "หลอดลม", "หลอดเลือดดำ"],options_en:["Ureter", "Urethra", "Trachea", "Vein"],a:0},
+    {q_th:"อวัยวะที่เก็บปัสสาวะก่อนขับออกคืออะไร",q_en:"Which organ stores urine before it is excreted?",options_th:["ท่อปัสสาวะ", "กระเพาะปัสสาวะ", "ท่อไต", "ลำไส้ใหญ่"],options_en:["Urethra", "Urinary bladder", "Ureter", "Large intestine"],a:1},
+    {q_th:"ปัสสาวะออกจากร่างกายผ่านส่วนใด",q_en:"Urine leaves the body through the…",options_th:["ท่อปัสสาวะ", "ท่อไต", "หลอดอาหาร", "หลอดเลือดแดง"],options_en:["Urethra", "Ureter", "Esophagus", "Artery"],a:0},
+    {q_th:"ขั้นตอนสำคัญของการสร้างปัสสาวะในเนฟรอนมีอะไรบ้าง",q_en:"Key steps of urine formation include…",options_th:["การกรอง การดูดกลับ และการหลั่ง", "การย่อย การดูดซึม และการขับถ่าย", "การหายใจเข้า การหายใจออก", "การสังเคราะห์แสง"],options_en:["Filtration, reabsorption, and secretion", "Digestion, absorption, and excretion", "Inhalation and exhalation", "Photosynthesis"],a:0},
+    {q_th:"การดูดกลับ (reabsorption) หมายถึงอะไร",q_en:"Reabsorption means…",options_th:["ของเสียถูกดูดกลับเข้ากระเพาะ", "สารที่เป็นประโยชน์ถูกดูดกลับเข้าสู่เลือด", "เลือดถูกดูดกลับเข้าปอด", "ปัสสาวะถูกดูดกลับเข้าหัวใจ"],options_en:["Wastes return to the stomach", "Useful substances return to the blood", "Blood returns to lungs", "Urine returns to heart"],a:1},
+    {q_th:"ปกติแล้ว กลูโคสที่ถูกกรองจะเป็นอย่างไร",q_en:"Normally, filtered glucose is…",options_th:["ถูกขับออกหมด", "ถูกดูดกลับเกือบทั้งหมด", "กลายเป็นยูเรียทันที", "ถูกเก็บในกระเพาะปัสสาวะ"],options_en:["All excreted", "Almost all reabsorbed", "Turned into urea immediately", "Stored in the bladder"],a:1},
+    {q_th:"ถ้าพบกลูโคสในปัสสาวะมากผิดปกติ อาจเกี่ยวข้องกับโรคใด",q_en:"High glucose in urine may relate to…",options_th:["โรคหอบหืด", "โรคเบาหวาน", "โรคกระดูกพรุน", "ไข้หวัด"],options_en:["Asthma", "Diabetes", "Osteoporosis", "Flu"],a:1},
+    {q_th:"ไตช่วยควบคุมสมดุลน้ำและเกลือแร่ของร่างกายได้อย่างไร",q_en:"How do kidneys help maintain water and salt balance?",options_th:["สร้างน้ำดี", "ปรับการดูดกลับน้ำและเกลือแร่ในท่อหน่วยไต", "สร้างออกซิเจน", "ย่อยโปรตีน"],options_en:["Make bile", "Adjust reabsorption of water and salts in tubules", "Make oxygen", "Digest protein"],a:1},
+    {q_th:"เมื่อร่างกายขาดน้ำ ปัสสาวะมักมีลักษณะอย่างไร",q_en:"When the body is dehydrated, urine is usually…",options_th:["จางและปริมาณมาก", "เข้มและปริมาณน้อย", "เป็นสีเขียว", "ไม่มีเลยเสมอ"],options_en:["Very dilute and large volume", "More concentrated and smaller volume", "Green", "Always none"],a:1},
+    {q_th:"ฮอร์โมน ADH มีบทบาทเกี่ยวกับอะไรในระบบขับถ่าย",q_en:"ADH mainly affects…",options_th:["การย่อยไขมัน", "การดูดกลับน้ำที่ไต", "การสร้างเม็ดเลือดขาว", "การแลกเปลี่ยนแก๊ส"],options_en:["Fat digestion", "Water reabsorption in kidneys", "White blood cell production", "Gas exchange"],a:1},
+    {q_th:"ถ้า ADH มากขึ้น โดยทั่วไปปัสสาวะจะเป็นอย่างไร",q_en:"If ADH increases, urine will generally…",options_th:["มากขึ้นและจางลง", "น้อยลงและเข้มขึ้น", "ไม่เปลี่ยนเลย", "กลายเป็นน้ำดี"],options_en:["Increase and become dilute", "Decrease and become concentrated", "Not change", "Turn into bile"],a:1},
+    {q_th:"สารใดต่อไปนี้เป็นของเสียที่ปอดช่วยขับออก",q_en:"Which waste is removed by the lungs?",options_th:["ยูเรีย", "คาร์บอนไดออกไซด์", "กลูโคส", "แป้ง"],options_en:["Urea", "Carbon dioxide", "Glucose", "Starch"],a:1},
+    {q_th:"ผิวหนังช่วยขับถ่ายของเสียผ่านกระบวนการใด",q_en:"Skin excretes wastes mainly through…",options_th:["เหงื่อ", "การหายใจ", "การย่อย", "การดูดซึม"],options_en:["Sweating", "Breathing", "Digestion", "Absorption"],a:0},
+    {q_th:"เหงื่อมีองค์ประกอบใดเด่น",q_en:"Sweat mainly contains…",options_th:["น้ำและเกลือแร่บางส่วน", "น้ำดีและเอนไซม์", "กลูโคสสูงมาก", "โปรตีนจำนวนมาก"],options_en:["Water and some salts", "Bile and enzymes", "Very high glucose", "Lots of proteins"],a:0},
+    {q_th:"ตับเกี่ยวข้องกับของเสียอย่างไร",q_en:"How is the liver related to wastes?",options_th:["เปลี่ยนยูเรียเป็นกลูโคส", "เปลี่ยนแอมโมเนียให้เป็นยูเรีย", "สร้างออกซิเจน", "ดูดซึมอาหารทั้งหมด"],options_en:["Turns urea into glucose", "Converts ammonia to urea", "Produces oxygen", "Absorbs all nutrients"],a:1},
+    {q_th:"แอมโมเนียเป็นสารแบบใด",q_en:"Ammonia is…",options_th:["ไม่เป็นพิษ", "เป็นพิษต่อร่างกาย ต้องถูกเปลี่ยนรูป", "เป็นน้ำตาล", "เป็นเอนไซม์ย่อยอาหาร"],options_en:["Non-toxic", "Toxic and needs conversion", "A sugar", "A digestive enzyme"],a:1},
+    {q_th:"ข้อใดเป็นเส้นทางการเดินของปัสสาวะที่ถูกต้อง",q_en:"Which is the correct urine pathway?",options_th:["ไต → ท่อไต → กระเพาะปัสสาวะ → ท่อปัสสาวะ", "ไต → ท่อปัสสาวะ → กระเพาะปัสสาวะ → ท่อไต", "กระเพาะปัสสาวะ → ไต → ท่อไต", "ไต → ลำไส้ใหญ่ → ท่อปัสสาวะ"],options_en:["Kidney → ureter → bladder → urethra", "Kidney → urethra → bladder → ureter", "Bladder → kidney → ureter", "Kidney → large intestine → urethra"],a:0},
+    {q_th:"ข้อใดกล่าวถูกต้องเกี่ยวกับกระเพาะปัสสาวะ",q_en:"Which statement about the bladder is correct?",options_th:["เป็นที่กรองเลือด", "เป็นที่เก็บปัสสาวะชั่วคราว", "เป็นที่ดูดซึมสารอาหาร", "เป็นที่แลกเปลี่ยนแก๊ส"],options_en:["Filters blood", "Temporarily stores urine", "Absorbs nutrients", "Exchanges gases"],a:1},
+    {q_th:"การฟอกไต (dialysis) ใช้ช่วยผู้ป่วยที่มีปัญหาอะไร",q_en:"Dialysis helps patients with…",options_th:["ไตทำงานบกพร่อง", "กระเพาะปัสสาวะโต", "ลำไส้อุดตัน", "หัวใจเต้นเร็ว"],options_en:["Kidney failure", "Enlarged bladder", "Intestinal blockage", "Fast heartbeat"],a:0},
+    {q_th:"ข้อใดเป็นหน้าที่ของไตที่เกี่ยวข้องกับเลือด",q_en:"A kidney function related to blood is…",options_th:["ช่วยสร้างฮอร์โมนบางชนิดและช่วยควบคุมความดันเลือด", "สร้างเม็ดเลือดขาวทั้งหมด", "ทำให้เลือดเป็นกรดเสมอ", "ทำให้เลือดแข็งตัวทันที"],options_en:["Produce some hormones and help regulate blood pressure", "Make all WBC", "Always make blood acidic", "Instantly clot blood"],a:0},
+    {q_th:"การรักษาสมดุลกรด-เบสในเลือด ไตช่วยได้อย่างไร",q_en:"How do kidneys help acid–base balance?",options_th:["ปรับการขับ/ดูดกลับไฮโดรเจนไอออนและไบคาร์บอเนต", "สร้างออกซิเจนเพิ่ม", "ย่อยโปรตีน", "สร้างน้ำลาย"],options_en:["Adjust excretion/reabsorption of H⁺ and bicarbonate", "Make more oxygen", "Digest protein", "Make saliva"],a:0},
+    {q_th:"ถ้าดื่มน้ำมากในเวลาสั้น ๆ ปัสสาวะมักเป็นอย่างไร",q_en:"If you drink a lot of water quickly, urine is usually…",options_th:["เข้มและน้อย", "จางและมากขึ้น", "เป็นสีแดงเสมอ", "ไม่มีเลย"],options_en:["Concentrated and little", "More dilute and larger volume", "Always red", "None"],a:1},
+    {q_th:"ข้อใดเป็นตัวอย่างของการขับถ่าย (excretion) ไม่ใช่การขับออก (egestion)",q_en:"Which is excretion (not egestion)?",options_th:["ขับอุจจาระ", "ขับยูเรียออกทางปัสสาวะ", "คายอาหารที่กลืนผิด", "อาเจียนอาหารออกมา"],options_en:["Defecating feces", "Removing urea in urine", "Spitting out food", "Vomiting food"],a:1},
+    {q_th:"สรุปภาพรวมระบบขับถ่ายของเสียที่ถูกต้องที่สุดคือข้อใด",q_en:"Which best summarizes the excretory system?",options_th:["กำจัดของเสียและช่วยรักษาสมดุลภายในร่างกาย", "สร้างพลังงานให้ร่างกาย", "ย่อยอาหารอย่างเดียว", "สร้างเลือดอย่างเดียว"],options_en:["Removes wastes and helps maintain homeostasis", "Produces energy for the body", "Only digests food", "Only makes blood"],a:0}
+  ],
+  2: [],
+  3: [],
+};
+
+/* =======================
+   State & LocalStorage
+======================= */
+const state = {
+  screen: "login", // login | stage | game | result
+  playerName: "",
+  stage: 1,
+  idx: 0,
+  picked: [],
+  judged: [],
+  orderMaps: []
+};
+function keyAll(){ return "kruPai_digestive_history_v1"; } // {name:{stage1:[],stage2:[],stage3:[]}}
+function loadAllHistory(){
+  try{ return JSON.parse(localStorage.getItem(keyAll()) || "{}"); }
+  catch(e){ return {}; }
+}
+function saveAllHistory(obj){
+  localStorage.setItem(keyAll(), JSON.stringify(obj));
+}
+function ensureNameRecord(all, name){
+  if(!all[name]) all[name] = {stage1:[],stage2:[],stage3:[]};
+  if(!all[name].stage1) all[name].stage1=[];
+  if(!all[name].stage2) all[name].stage2=[];
+  if(!all[name].stage3) all[name].stage3=[];
+}
+function getStageArr(all, name, stage){
+  ensureNameRecord(all,name);
+  return stage===1? all[name].stage1 : stage===2? all[name].stage2 : all[name].stage3;
+}
+function addAttempt(name, stage, score, total){
+  const all = loadAllHistory();
+  ensureNameRecord(all,name);
+  const now = new Date();
+  const stamp = now.toLocaleString("th-TH",{hour12:false});
+  const arr = getStageArr(all,name,stage);
+  arr.unshift({t:stamp, score, total});
+  all[name][stage===1?"stage1":stage===2?"stage2":"stage3"] = arr.slice(0,20);
+  saveAllHistory(all);
+}
+function clearAllMyHistory(){
+  if(!state.playerName) return;
+  const all = loadAllHistory();
+  delete all[state.playerName];
+  saveAllHistory(all);
+  renderStageHistory();
+  renderLastPlayHint();
+}
+function clearMyStageHistory(){
+  if(!state.playerName) return;
+  const all = loadAllHistory();
+  ensureNameRecord(all,state.playerName);
+  all[state.playerName][state.stage===1?"stage1":state.stage===2?"stage2":"stage3"] = [];
+  saveAllHistory(all);
+  renderHistoryThisStage();
+}
+function praiseByScore(score,total){
+  const pct = Math.round(score*100/total);
+  if(pct>=90) return {text: LANG==="th" ? "🌟 สุดยอดมาก! เก่งขั้นเทพเลย!" : "🌟 Amazing! You’re a superstar!", tone:"var(--ok)"};
+  if(pct>=75) return {text: LANG==="th" ? "💙 เก่งมาก! อีกนิดเดียวจะสุดยอดแล้ว!" : "💙 Great job! You’re almost there!", tone:"var(--brand)"};
+  if(pct>=60) return {text: LANG==="th" ? "✨ เกือบผ่านแล้ว! ฝึกอีกนิดจะปังมาก!" : "✨ Nice! A bit more practice and you’ll shine!", tone:"var(--accent)"};
+  return {text: LANG==="th" ? "😊 สู้ๆ นะจ๊ะ ลองใหม่อีกครั้ง เดี๋ยวเก่งขึ้นแน่นอน!" : "😊 Keep going! Try again — you’ll improve!", tone:"var(--muted)"};
+}
+
+/* =======================
+   Navigation between screens
+======================= */
+function show(id){
+  document.getElementById("screenLogin").style.display = (id==="login") ? "block" : "none";
+  document.getElementById("screenStage").style.display = (id==="stage") ? "block" : "none";
+  document.getElementById("screenGame").style.display  = (id==="game")  ? "block" : "none";
+  document.getElementById("screenResult").style.display= (id==="result")? "block" : "none";
+  state.screen = id;
+  document.getElementById("progressText").textContent = "";
+}
+function backToLogin(){
+  sClick();
+  show("login");
+}
+function goStageSelect(){
+  sClick();
+  const input = document.getElementById("playerNameInput");
+  const name = (input.value||"").trim();
+  if(!name){
+    alert(LANG==="th" ? "กรุณาพิมพ์ชื่อก่อนเล่นนะจ๊ะ 😊" : "Please enter a name 😊");
+    input.focus(); return;
+  }
+  state.playerName = name;
+  document.getElementById("playerBadgeName").textContent = name;
+  document.getElementById("playerBadge").style.display = "inline-flex";
+  show("stage");
+  renderStageHistory();
+}
+function exitToStages(){
+  sClick();
+  show("stage");
+  renderStageHistory();
+}
+function startStage(n){
+  sClick();
+  if(n!==1){
+    alert(LANG==="th" ? "ด่านนี้กำลังเติมคำถามอยู่จ้า 😊" : "This stage is coming soon 😊");
+    return;
+  }
+  state.stage = n;
+  resetStageState();
+  show("game");
+  render();
+}
+function replayStage(){
+  sClick();
+  resetStageState();
+  show("game");
+  render();
+}
+
+/* =======================
+   Stage gameplay
+======================= */
+function resetStageState(){
+  state.idx = 0;
+  const DATA = STAGE_DATA[state.stage] || [];
+  state.picked = Array(DATA.length).fill(null);
+  state.judged = Array(DATA.length).fill(null);
+  state.orderMaps = Array(DATA.length).fill(null);
+}
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
+function showBigEmoji(isCorrect){
+  const el = document.createElement("div");
+  el.className = "big-emoji";
+  el.textContent = isCorrect ? "😁🎉" : "😅💦";
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 950);
+}
+
+function render(){
+  const DATA = STAGE_DATA[state.stage] || [];
+  const t = UI[LANG];
+  if(!DATA.length){
+    document.getElementById("question").textContent = LANG==="th" ? "ด่านนี้กำลังเติมคำถาม" : "Coming soon";
+    document.getElementById("choices").innerHTML = "";
+    document.getElementById("jumper").innerHTML = "";
+    return;
+  }
+  const item = DATA[state.idx];
+  document.getElementById("progressText").textContent = t.qLabel(state.idx+1, DATA.length) + " • " + (LANG==="th" ? `ด่าน ${state.stage}` : `Stage ${state.stage}`);
+
+  document.getElementById("question").textContent = (LANG==="th") ? item.q_th : item.q_en;
+  const opts = (LANG==="th") ? item.options_th : item.options_en;
+
+  // build order map (shuffle once per question)
+  if(!state.orderMaps[state.idx]){
+    const base = opts.map((_,i)=>i);
+    shuffle(base);
+    state.orderMaps[state.idx] = base;
+  }
+  const order = state.orderMaps[state.idx];
+  const correctScreen = order.indexOf(item.a);
+
+  const choices = document.getElementById("choices");
+  choices.innerHTML = "";
+  for(let i=0;i<order.length;i++){
+    const optIndex = order[i];
+    const b = document.createElement("button");
+    b.className = "choice";
+    b.textContent = opts[optIndex];
+    if(state.picked[state.idx]===i) b.classList.add("selected");
+    if(state.judged[state.idx]===false){ b.disabled=true; b.classList.add("locked"); }
+    if(state.judged[state.idx]!==null){
+      if(i===correctScreen) b.classList.add("correct");
+      if(state.picked[state.idx]===i && i!==correctScreen) b.classList.add("wrong");
+    }
+    b.onclick = ()=>select(i);
+    choices.appendChild(b);
+  }
+
+  const jumper = document.getElementById("jumper");
+  jumper.innerHTML = "";
+  for(let k=0;k<DATA.length;k++){
+    const d = document.createElement("button");
+    d.className="dot";
+    d.textContent = (k+1);
+    if(k===state.idx) d.classList.add("current");
+    if(state.judged[k]===true) d.classList.add("correct");
+    else if(state.judged[k]===false) d.classList.add("wrong");
+    else if(state.picked[k]!==null) d.classList.add("done");
+    d.onclick = ()=>{ sClick(); state.idx=k; render(); };
+    jumper.appendChild(d);
+  }
+}
+
+function select(i){
+  // Lock if answered wrong before
+  if(state.judged[state.idx]===false) return;
+
+  sClick();
+  const DATA = STAGE_DATA[state.stage];
+  const item = DATA[state.idx];
+
+  const order = state.orderMaps[state.idx];
+  const correctScreen = order.indexOf(item.a);
+
+  state.picked[state.idx]=i;
+  const ok = (i===correctScreen);
+  state.judged[state.idx]=ok;
+
+  showBigEmoji(ok);
+  if(ok) sOk(); else sBad();
+  render();
+}
+function prevQ(){ sClick(); if(state.idx>0){state.idx--; render();}}
+function nextQ(){ sClick(); const DATA = STAGE_DATA[state.stage]; if(state.idx<DATA.length-1){state.idx++; render();}}
+
+function finish(){
+  sClick();
+  const DATA = STAGE_DATA[state.stage] || [];
+  let score = 0;
+  for(let i=0;i<DATA.length;i++) if(state.judged[i]===true) score++;
+  const pct = DATA.length ? Math.round(score*100/DATA.length) : 0;
+
+  // Save
+  if(state.playerName && DATA.length){
+    addAttempt(state.playerName, state.stage, score, DATA.length);
+  }
+
+  const praise = praiseByScore(score, DATA.length||1);
+  document.getElementById("playerShow").textContent = UI[LANG].playerShow(state.playerName || "-", state.stage);
+  const pt = document.getElementById("praiseText");
+  pt.textContent = praise.text;
+  pt.style.color = praise.tone;
+
+  document.getElementById("scoreBig").textContent = UI[LANG].score(score, DATA.length);
+  document.getElementById("summary").textContent = UI[LANG].percent(pct) + " • " + (LANG==="th" ? "หัวข้อ: " : "Topic: ") + UI[LANG].stageName(state.stage);
+
+  show("result");
+  renderHistoryThisStage();
+}
+
+/* =======================
+   History rendering
+======================= */
+function renderLastPlayHint(){
+  const hint = document.getElementById("lastPlayHint");
+  const name = (document.getElementById("playerNameInput").value||"").trim();
+  if(!name){ hint.style.display="none"; return; }
+  const all = loadAllHistory();
+  if(!all[name]){ hint.style.display="none"; return; }
+  const a1 = (all[name].stage1||[])[0];
+  if(a1){
+    hint.textContent = (LANG==="th")
+      ? `ล่าสุด (ด่าน 1): ${a1.score}/${a1.total} • เล่นมาแล้ว ${(all[name].stage1||[]).length} รอบ`
+      : `Last (Stage 1): ${a1.score}/${a1.total} • Attempts: ${(all[name].stage1||[]).length}`;
+    hint.style.display="block";
+  }else{
+    hint.style.display="none";
+  }
+}
+function renderStageHistory(){
+  const box = document.getElementById("stageHistoryBox");
+  const table = document.getElementById("stageHistoryTable");
+  if(!state.playerName){ box.style.display="none"; return; }
+
+  const all = loadAllHistory();
+  if(!all[state.playerName]){ box.style.display="none"; return; }
+  ensureNameRecord(all,state.playerName);
+
+  const s1 = all[state.playerName].stage1 || [];
+  const s2 = all[state.playerName].stage2 || [];
+  const s3 = all[state.playerName].stage3 || [];
+  const totalAttempts = s1.length + s2.length + s3.length;
+  if(!totalAttempts){ box.style.display="none"; return; }
+
+  box.style.display="block";
+  const t = UI[LANG];
+  const row = (arr, stageNo)=>{
+    if(!arr.length) return `<tr><td>${stageNo}</td><td>${t.stageName(stageNo)}</td><td>-</td><td>-</td><td>-</td></tr>`;
+    const best = arr.reduce((m,x)=> Math.max(m, Math.round(x.score*100/x.total)), 0);
+    const last = arr[0];
+    const lastPct = Math.round(last.score*100/last.total);
+    return `<tr>
+      <td><b>${stageNo}</b></td>
+      <td>${t.stageName(stageNo)}</td>
+      <td>${arr.length}</td>
+      <td><b>${last.score}/${last.total}</b> (${lastPct}%)</td>
+      <td>${best}%</td>
+    </tr>`;
+  };
+
+  table.innerHTML = `
+    <tr>
+      <th>${LANG==="th" ? "ด่าน" : "Stage"}</th>
+      <th>${LANG==="th" ? "หัวข้อ" : "Topic"}</th>
+      <th>${LANG==="th" ? "จำนวนรอบ" : "Attempts"}</th>
+      <th>${LANG==="th" ? "ล่าสุด" : "Last"}</th>
+      <th>${LANG==="th" ? "ดีที่สุด" : "Best"}</th>
+    </tr>
+    ${row(s1,1)}
+    ${row(s2,2)}
+    ${row(s3,3)}
+  `;
+}
+function renderHistoryThisStage(){
+  const box = document.getElementById("historyBox");
+  const table = document.getElementById("historyTable");
+  if(!state.playerName){ box.style.display="none"; return; }
+  const all = loadAllHistory();
+  if(!all[state.playerName]){ box.style.display="none"; return; }
+  ensureNameRecord(all,state.playerName);
+
+  const arr = getStageArr(all,state.playerName,state.stage) || [];
+  if(!arr.length){ box.style.display="none"; return; }
+
+  box.style.display="block";
+  table.innerHTML = `
+    <tr>
+      <th>${LANG==="th" ? "รอบ" : "No."}</th>
+      <th>${LANG==="th" ? "วันที่/เวลา" : "Date/Time"}</th>
+      <th>${LANG==="th" ? "คะแนน" : "Score"}</th>
+      <th>%</th>
+    </tr>
+  ` + arr.map((h,i)=>{
+    const pct = Math.round(h.score*100/h.total);
+    return `<tr>
+      <td>${i+1}</td>
+      <td>${h.t}</td>
+      <td><b>${h.score}/${h.total}</b></td>
+      <td>${pct}%</td>
+    </tr>`;
+  }).join("");
+}
+
+/* =======================
+   Init
+======================= */
+window.addEventListener("DOMContentLoaded", ()=>{
+  document.getElementById("playerNameInput").addEventListener("input", renderLastPlayHint);
+  document.getElementById("playerNameInput").addEventListener("keydown", (e)=>{ if(e.key==="Enter") goStageSelect(); });
+
+  applyUI();
+  setLang(LANG); // also updates buttons and re-applies UI
+  show("login");
+  renderLastPlayHint();
+});
+</script>
+
+</body>
+</html>
